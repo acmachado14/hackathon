@@ -13,5 +13,9 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+<<<<<<< HEAD
 /.docker
 *.png
+=======
+.docker
+>>>>>>> e4f5d8479e416c8ff21237dc11768f5530ecaef4
