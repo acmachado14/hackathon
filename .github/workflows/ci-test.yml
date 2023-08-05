@@ -21,36 +21,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Configurar permissões para Composer e Artisan
-        run: |
-          USER_UID=4584
-          USER_NAME=novo_usuario
-          echo "USER_NAME=$USER_NAME" >> $GITHUB_ENV
-          
-          sudo useradd -G www-data,root -u $USER_UID -d /home/$USER_NAME $USER_NAME
-          sudo mkdir -p /home/$USER_NAME/.composer
-          sudo chown -R $USER_NAME:$USER_NAME /home/$USER_NAME
-        shell: bash
-
       - name: Build and start containers
-        run: sudo -u novo_usuario docker-compose up -d
-        working-directory: ./backend
-
-      - name: Alterar permissões do arquivo composer.lock
-        run: |
-          sudo chown $user:novo_usuario ./backend/composer.lock
-        working-directory: ./backend
+        run: docker-compose up -d
+        working-directory: ./backend  # Diretório do docker-compose.yml
 
       - name: Run Composer Install
-        run: sudo -u novo_usuario docker-compose exec -T app composer update
+        run: -u gelin docker-compose exec -T app composer update
         working-directory: ./backend
 
       - name: Run Migrations
-        run: sudo -u novo_usuario docker-compose exec -T app php artisan migrate
+        run: docker-compose exec -T app php artisan migrate
         working-directory: ./backend
 
       - name: Run Tests
-        run: sudo -u novo_usuario docker-compose exec -T app ./vendor/bin/phpunit
+        run: docker-compose exec -T app ./vendor/bin/phpunit
         working-directory: ./backend
 
       - name: Stop containers
