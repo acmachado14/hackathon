@@ -21,37 +21,32 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Build and start containers
-        run: docker-compose up -d
-        working-directory: ./backend
-
       - name: Configurar permissões para Composer e Artisan
         run: |
-          sudo useradd -G www-data,root -u $uid -d /home/$user $user
-          sudo mkdir -p /home/$user/.composer &&
-          sudo chown -R $user:$user /home/$user
+          sudo useradd -G www-data,root -u $UID -d /home/$USER novo_usuario
+          sudo mkdir -p /home/novo_usuario/.composer
+          sudo chown -R novo_usuario:novo_usuario /home/novo_usuario
         shell: bash
+
+      - name: Build and start containers
+        run: sudo -u novo_usuario docker-compose up -d
+        working-directory: ./backend
 
       - name: Alterar permissões do arquivo composer.lock
         run: |
-          sudo chown $user:$user ./backend/composer.lock
-        working-directory: ./backend
-
-      - name: Executar docker-compose
-        run: |
-          sudo docker-compose exec -T app composer update
+          sudo chown $user:novo_usuario ./backend/composer.lock
         working-directory: ./backend
 
       - name: Run Composer Install
-        run: sudo docker-compose exec -T app composer update
+        run: sudo -u novo_usuario docker-compose exec -T app composer update
         working-directory: ./backend
 
       - name: Run Migrations
-        run: sudo docker-compose exec -T app php artisan migrate
+        run: sudo -u novo_usuario docker-compose exec -T app php artisan migrate
         working-directory: ./backend
 
       - name: Run Tests
-        run: sudo docker-compose exec -T app ./vendor/bin/phpunit
+        run: sudo -u novo_usuario docker-compose exec -T app ./vendor/bin/phpunit
         working-directory: ./backend
 
       - name: Stop containers
