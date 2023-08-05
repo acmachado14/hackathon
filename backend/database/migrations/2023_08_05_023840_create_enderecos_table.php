@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('enderecos', function (Blueprint $table) {
-            $table->increments('idEndereco'); // Chave primária auto-incremento
+            $table->id('idEndereco')->unsigned()->unique();
             $table->string('CEP')->nullable();
             $table->string('pais')->nullable();
             $table->string('estado')->nullable();

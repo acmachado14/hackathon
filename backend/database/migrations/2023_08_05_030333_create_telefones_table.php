@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('telefones', function (Blueprint $table) {
-            $table->increments('idTelefone'); // Chave primária auto-incremento
+            $table->id('idTelefone')->unsigned()->unique();
             $table->integer('telefone');
             $table->timestamps();
         });
