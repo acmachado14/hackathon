@@ -64,7 +64,7 @@ services:
 
     tests:
         build: .
-        command: bash -c "composer update && php artisan migrate && vendor/bin/phpunit"
+        command: bash -c "sudo composer update && php artisan migrate && vendor/bin/phpunit"
         working_dir: /var/www/
         volumes:
             - ./:/var/www
