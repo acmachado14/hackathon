@@ -179,14 +179,27 @@
                 </v-col>
               </v-row>
               <v-row v-for="(item, index) in dependentes" :key="index">
+                <v-col cols="12">
+                <p style="padding-left: 15px;">Dependente {{ index+1 }}</p>
+                </v-col>
                 <v-col cols="8">
-                  <v-text-field v-model="item.nome" :label="'Nome do Dependente ' + (index + 1)"></v-text-field>
+                  <v-text-field :rules="ruleReq" v-model="item.nome" :label="'Nome do Dependente ' + (index + 1)"></v-text-field>
                 </v-col>
                 <v-col cols="4">
-                  <v-select v-model="item.tipo" :items="optDependente" :label="'Tipo do Dependente ' + (index + 1)"></v-select>
+                  <v-select :rules="ruleReq" v-model="item.grau" :items="optDependente" :label="'Tipo do Dependente ' + (index + 1)"></v-select>
+                </v-col>
+                <v-col cols="6">
+                  <v-text-field :rules="ruleReq" v-model="item.cpf" :label="'CPF do Dependente ' + (index + 1)"></v-text-field>
+                </v-col>
+                <v-col cols="6">
+                  <v-text-field :rules="ruleReq" v-model="item.dataNascimento" :label="'Nascimento do Dependente ' + (index + 1)"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="6">
+                  <v-select :rules="ruleReq" v-model="item.sexo" :items="optSexo" :label="'Sexo do Dependente '  + (index + 1)"></v-select>
                 </v-col>
               </v-row>
               <v-btn type="submit" color="primary">Enviar</v-btn>
+              <v-btn @click="fillForm" color="warning">Fill</v-btn>
             </v-form>
           </v-card-text>
         </v-card>
@@ -197,6 +210,7 @@
 
 <script>
 import axios from 'axios';
+import { vMaska } from "maska";
 
 export default {
   data() {
@@ -205,9 +219,15 @@ export default {
       optEstadoCivil: ["Solteiro(a)", "Casado(a)", "Divorciado(a)", "Viúvo(a)", "União Estável", "Separado(a)", "Outro"],
       optGrauInstrucao: ["Ensino Fundamental", "Ensino Médio", "Ensino Técnico", "Ensino Superior", "Pós-Graduação", "Mestrado", "Doutorado", "Outro"],
       optCor: ["Branco", "Negro", "Pardo", "Amarelo", "Indígena", "Outra"],
-      optNacionalidade: [],
-      optPaisNascimento: [],
+      optNacionalidade: ["Brasileiro"],
+      optPaisNascimento: ["Brasil"],
       optTipoLogradouro: ["Avenida", "Rua", "Travessa", "Alameda", "Praça", "Estrada", "Largo", "Viela", "Passagem", "Rodovia", "Beco", "Ponte", "Caminho", "Alley", "Boulevard", "Calçada", "Cais", "Elevado", "Jardim", "Ladeira", "Marginal", "Passeio", "Pátio", "Pier", "Ramal", "Sítio", "Vila"],
+      optFuncao: [1],
+      optAlojado: ["Betim"],
+      optEstadoEmissao: ["MG"],
+      optCidadeEmissao: ["Betim"],
+      optDependente: ['Filho(a)', 'Enteado(a)', 'Cônjuge', 'Pai/Mãe', 'Outro'],
+      optPCD: ["Não", "Sim"],
 
       nome: '',
       nomeMae: '',
@@ -231,6 +251,7 @@ export default {
       nomeConhecido: '',
       cargoConhecido: '',
       cidadeConhecido: '',
+
       cep: '',
       pais: '',
       estado: '',
@@ -240,14 +261,34 @@ export default {
       rua: '',
       num: '',
       complemento: '',
+
       fileRG: null,
       fileCPF: null,
       fileCurriculo: null,
       fileCNH: null,
       fileReservista: null,
+
+      estadoEmissao: null,
+      cidadeEmissao: null,
+      numRG: '',
+      orgaoEmissor: '',
+      dataExpedicao: '',
+      cpf: '',
+      pis: '',
+
+      numeroBotina: '',
+      numeroCalca: '',
+      tamanhoCamisa: '',
+
+      telefone1: '',
+      telefone2: '',
+      email: '',
+
+      funcao: null,
+      alojado: null,
+      pcd: null,
+
       dependentes: [],
-      optDependente: ['Filho(a)', 'Enteado(a)', 'Cônjuge', 'Pai/Mãe', 'Outro'],
-      optPCD: ["Não", "Sim"],
       ruleReq: [
         // value => !!value || 'Esse campo é obrigatório.',
       ],
@@ -265,7 +306,7 @@ export default {
       const deps = [];
       this.dependentes.forEach(item => {
         // Do something with each item, if needed
-        deps.push({ nomeDep: item.nome, tipoDep: item.tipo });
+        deps.push({ nome: item.nome, grau: item.grau, cpf: item.cpf, sexo: item.sexo, dataNascimento: item.dataNascimento });
       });
 
       const fields = JSON.stringify({
@@ -284,18 +325,18 @@ export default {
         estadoNascimento: this.estadoNascimento,
         cidadeNascimento: this.cidadeNascimento,
 
-        numeroBotina: this.numeroBotina,
-        numeroCalca: this.numeroCalca,
+        numeroBotina: parseInt(this.numeroBotina),
+        numeroCalca: parseInt(this.numeroCalca),
         tamanhoCamisa: this.tamanhoCamisa,
 
         email: this.email,
-        numIdentidade: this.numIdentidade,
+        numIdentidade: parseInt(this.numIdentidade),
         orgaoEmissorIdentidade: this.orgaoEmissor,
         estadoOrgaoEmissor: this.estadoEmissao,
         cidadeEmissaoIdentidade: this.cidadeEmissao,
         dataExpedicaoIdentidade: this.dataExpedicao,
-        numCPF: this.cpf,
-        numPisPasep: this.pis,
+        numCPF: parseInt(this.cpf),
+        numPisPasep: parseInt(this.pis),
 
         conhecido: this.conhecido,
         nomeConhecido: this.nomeConhecido,
@@ -341,7 +382,7 @@ export default {
 
     },
     addField() {
-      this.dependentes.push({ text: '', select: null });
+      this.dependentes.push({ nome: '', grau: null, cpf: '', sexo: null, dataNascimento: '' });
     },
     removeField() {
       this.dependentes.pop();
@@ -360,6 +401,44 @@ export default {
       } catch (error) {
         console.error('Erro ao buscar o endereço:', error);
       }
+    },
+    fillForm() {
+      this.sexo = this.sexo || this.optSexo[0];
+      this.estadoCivil = this.estadoCivil || this.optEstadoCivil[0];
+      this.grauInstrucao = this.grauInstrucao || this.optGrauInstrucao[0];
+      this.cor = this.cor || this.optCor[0];
+      this.paisNascimento = this.paisNascimento || this.optPaisNascimento[0];
+      this.nacionalidade = this.nacionalidade || this.optNacionalidade[0];
+      this.tipoLogradouro = this.tipoLogradouro || this.optTipoLogradouro[0];
+      this.estadoEmissao = this.estadoEmissao || this.optEstadoEmissao[0];
+      this.cidadeEmissao = this.cidadeEmissao || this.optCidadeEmissao[0];
+      this.funcao = this.funcao || this.optFuncao[0];
+      this.alojado = this.alojado || this.optAlojado[0];
+      this.pcd = this.pcd || this.optPCD[0];
+      if (!this.nome) this.nome = 'Nome Padrão';
+      if (!this.nomeMae) this.nomeMae = 'Mãe Padrão';
+      if (!this.nomePai) this.nomePai = 'Pai Padrão';
+      if (!this.dataNascimento) this.dataNascimento = '01/01/2000';
+      if (!this.estadoNascimento) this.estadoNascimento = 'Estado Padrão';
+      if (!this.cidadeNascimento) this.cidadeNascimento = 'Cidade Padrão';
+      if (!this.nomeConhecido) this.nomeConhecido = 'Conhecido Padrão';
+      if (!this.cargoConhecido) this.cargoConhecido = 'Cargo Padrão';
+      if (!this.cidadeConhecido) this.cidadeConhecido = 'Cidade Conhecido Padrão';
+      if (!this.cep) this.cep = '32603242';
+      if (!this.rua) this.rua = 'Rua Padrão';
+      if (!this.num) this.num = '123';
+      if (!this.complemento) this.complemento = 'Complemento Padrão';
+      if (!this.numRG) this.numRG = '12345678';
+      if (!this.orgaoEmissor) this.orgaoEmissor = 'Orgão Padrão';
+      if (!this.dataExpedicao) this.dataExpedicao = '01/01/2010';
+      if (!this.cpf) this.cpf = '12345678900';
+      if (!this.pis) this.pis = '12345678900';
+      if (!this.numeroBotina) this.numeroBotina = '42';
+      if (!this.numeroCalca) this.numeroCalca = '40';
+      if (!this.tamanhoCamisa) this.tamanhoCamisa = 'M';
+      if (!this.telefone1) this.telefone1 = '(12) 3456-7890';
+      if (!this.telefone2) this.telefone2 = '(34) 5678-9012';
+      if (!this.email) this.email = 'email@example.com';
     },
   },
 };
