@@ -44,37 +44,38 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Funcao` (
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Candidatos`
+-- Table `mydb`.`Canditatos`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Candidatos` (
+CREATE TABLE IF NOT EXISTS `mydb`.`Canditatos` (
     `nomeCandidato` VARCHAR(80) NOT NULL,
-    `nomeMae` VARCHAR(45) NULL,
-    `nomePai` VARCHAR(45) NULL,
-    `sexo` VARCHAR(45) NULL,
-    `estadoCivil` VARCHAR(45) NULL,
-    `grauInstrucao` VARCHAR(45) NULL,
-    `racaCor` VARCHAR(45) NULL,
-    `dataNascimento` DATETIME NULL,
-    `nacionalidade` VARCHAR(45) NULL,
-    `paisNascimento` VARCHAR(45) NULL,
+    `nomeMae` VARCHAR(80) NOT NULL,
+    `nomePai` VARCHAR(80) NOT NULL,
+    `sexoCandidato` VARCHAR(45) NOT NULL,
+    `estadoCivil` VARCHAR(45) NOT NULL,
+    `grauInstrucao` VARCHAR(45) NOT NULL,
+    `racaCor` VARCHAR(45) NOT NULL,
+    `dataNascimentoCandidato` DATETIME NOT NULL,
+    `nacionalidade` VARCHAR(45) NOT NULL,
+    `paisNascimento` VARCHAR(45) NOT NULL,
     `estadoNascimento` VARCHAR(45) NULL,
     `cidadeNascimento` VARCHAR(45) NULL,
-    `numeroBotina` INT(2) NULL,
-    `numeroCalca` INT(2) NULL,
-    `tamanhoCamisa` CHAR(1) NULL,
-    `email` VARCHAR(80) NULL,
-    `numIdentidade` VARCHAR(45) NULL,
-    `orgaoEmissor` VARCHAR(45) NULL,
-    `estadoOrgaoEmissor` VARCHAR(45) NULL,
-    `cidadeEmissaoIdentidade` VARCHAR(45) NULL,
-    `dataEspedicaoIdentidade` VARCHAR(45) NULL,
+    `numeroBotina` INT(2) NOT NULL,
+    `numeroCalca` INT(2) NOT NULL,
+    `tamanhoCamisa` VARCHAR(3) NOT NULL,
+    `email` VARCHAR(80) NOT NULL,
+    `numIdentidade` INT(15) NOT NULL,
+    `orgaoEmissorIdentidade` VARCHAR(10) NULL,
+    `estadoOrgaoEmissor` VARCHAR(45) NOT NULL,
+    `cidadeEmissaoIdentidade` VARCHAR(45) NOT NULL,
+    `dataExpedicaoIdentidade` VARCHAR(45) NOT NULL,
     `numCPF` INT(11) NOT NULL,
-    `numPisPasep` INT(11) NULL,
-    `anexoIdentidade` VARCHAR(45) NULL,
-    `anexoCPF` VARCHAR(45) NULL,
-    `anexoCurriculo` VARCHAR(45) NULL,
-    `anexoCNH` VARCHAR(45) NULL,
-    `anexoCertificadoReservista` VARCHAR(45) NULL,
+    `numPisPasep` INT(15) NOT NULL,
+    `anexoIdentidade` VARCHAR(255) NOT NULL,
+    `anexoCPF` VARCHAR(255) NOT NULL,
+    `anexoCurriculo` VARCHAR(255) NOT NULL,
+    `anexoCNH` VARCHAR(255) NOT NULL,
+    `anexoCertificadoReservista` VARCHAR(255) NOT NULL,
+    `status` VARCHAR(45) NOT NULL,
     `Endereco_idEndereco` INT NOT NULL,
     `funcao_contratado` CHAR(4) NOT NULL,
     PRIMARY KEY (`numCPF`),
@@ -113,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Candidatos_has_Telefone` (
     INDEX `fk_Candidatos_has_Telefone_Candidatos_idx` (`Candidatos_numCPF` ASC) VISIBLE,
     CONSTRAINT `fk_Candidatos_has_Telefone_Candidatos`
     FOREIGN KEY (`Candidatos_numCPF`)
-    REFERENCES `mydb`.`Candidatos` (`numCPF`)
+    REFERENCES `mydb`.`Canditatos` (`numCPF`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
     CONSTRAINT `fk_Candidatos_has_Telefone_Telefone1`
@@ -136,12 +137,68 @@ CREATE TABLE IF NOT EXISTS `mydb`.`funcaoCandidatada` (
     INDEX `fk_Candidatos_has_Funcao_Candidatos1_idx` (`Candidatos_numCPF` ASC) VISIBLE,
     CONSTRAINT `fk_Candidatos_has_Funcao_Candidatos1`
     FOREIGN KEY (`Candidatos_numCPF`)
-    REFERENCES `mydb`.`Candidatos` (`numCPF`)
+    REFERENCES `mydb`.`Canditatos` (`numCPF`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
     CONSTRAINT `fk_Candidatos_has_Funcao_Funcao1`
     FOREIGN KEY (`Funcao_codigoFuncao`)
     REFERENCES `mydb`.`Funcao` (`codigoFuncao`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Dependentes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Dependentes` (
+    `numCPFDependente` INT(11) NOT NULL,
+    `nomeDependente` VARCHAR(100) NULL,
+    `sexoDependente` VARCHAR(45) NULL,
+    `dataNascimentoDependente` DATETIME NULL,
+    `grauParentesco` VARCHAR(45) NULL,
+    `Candidatos_numCPF` INT(11) NOT NULL,
+    PRIMARY KEY (`numCPFDependente`, `Candidatos_numCPF`),
+    INDEX `fk_Dependente_Candidatos1_idx` (`Candidatos_numCPF` ASC) VISIBLE,
+    CONSTRAINT `fk_Dependente_Candidatos1`
+    FOREIGN KEY (`Candidatos_numCPF`)
+    REFERENCES `mydb`.`Canditatos` (`numCPF`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`confidentesDaAlfa`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`confidentesDaAlfa` (
+    `nomeConfidenteNaAlfa` VARCHAR(80) NOT NULL,
+    `cidade` VARCHAR(100) NOT NULL,
+    `funcao` VARCHAR(100) NOT NULL,
+    `Candidatos_numCPF` INT(11) NOT NULL,
+    `idConfidenteNaAlfa` INT NOT NULL,
+    PRIMARY KEY (`idConfidenteNaAlfa`),
+    INDEX `fk_confidenteNaAlfa_Candidatos1_idx` (`Candidatos_numCPF` ASC) VISIBLE,
+    UNIQUE INDEX `idConfidenteNaAlfa_UNIQUE` (`idConfidenteNaAlfa` ASC) VISIBLE,
+    CONSTRAINT `fk_confidenteNaAlfa_Candidatos1`
+    FOREIGN KEY (`Candidatos_numCPF`)
+    REFERENCES `mydb`.`Canditatos` (`numCPF`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Logins`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Logins` (
+    `senha` VARCHAR(45) NOT NULL,
+    `Candidatos_numCPF` INT(11) NOT NULL,
+    PRIMARY KEY (`senha`),
+    INDEX `fk_table1_Logins1_idx` (`Candidatos_numCPF` ASC) VISIBLE,
+    CONSTRAINT `fk_table1_Logins1`
+    FOREIGN KEY (`Candidatos_numCPF`)
+    REFERENCES `mydb`.`Canditatos` (`numCPF`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
     ENGINE = InnoDB;
