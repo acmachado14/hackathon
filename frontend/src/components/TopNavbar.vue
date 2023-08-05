@@ -1,6 +1,6 @@
 <template>
   <v-app-bar app>
-    <v-toolbar-title>My App</v-toolbar-title>
+    <v-toolbar-title>Alfa Engenharia</v-toolbar-title>
     <v-spacer></v-spacer>
     <div class="center-buttons">
       <v-btn text to="/candidatos">Candidatos</v-btn>
