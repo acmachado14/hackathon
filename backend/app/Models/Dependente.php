@@ -11,13 +11,9 @@ class Dependente extends Model
 
     use HasFactory;
 
-    protected $table = 'Dependentes';
+    protected $table = 'dependentes';
 
-    protected $primaryKey = ['idDependente', 'idCandidato'];
-
-    protected $keyType = 'int';
-
-    public $incrementing = false;
+    protected $primaryKey = 'idDependente';
 
     protected $fillable = [
         'numCPFDependente',

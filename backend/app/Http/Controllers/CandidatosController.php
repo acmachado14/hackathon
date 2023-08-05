@@ -33,15 +33,15 @@ class CandidatosController extends Controller
 
         $image = $request->file('anexoIdentidade')->getPathname();
 
-        $textoExtraido = $this->extractTextFromImage($image);
+        $textoExtraido = $imageController->extractTextFromImage($image);
 
         // Verificando se o texto extraído contém padrões comuns de RG
         $validacao = [
             'NACIONAL', 'RG', 'identidade', 'cpf', 'DENATRAN', 'CONTRAN'
         ];
 
-        if ($this->compareStrings($validacao, $textoExtraido)) {
-
+        if (!$imageController->compareStrings($validacao, $textoExtraido)) {
+            return response()->json(['error' => 'RG nao e valido'], 403);
         }
 
         //dd("teste");
@@ -103,24 +103,30 @@ class CandidatosController extends Controller
 
         $candidato->save();
 
-        $confidente = ConfidentesDaAlfa::create([
-            'nomeConfidenteNaAlfa' => $request['nomeConhecido'],
-            'cidade' => $request['cidadeConhecido'],
-            'funcao' => $request['cargoConhecido'],
-            'idCandidato' => $candidato->idCandidato,
-        ]);
+        if($jsonFields->conhecido){
+            $confidente = ConfidentesDaAlfa::create([
+                'nomeConfidenteNaAlfa' => $jsonFields->nomeConhecido,
+                'cidade' => $jsonFields->cidadeConhecido,
+                'funcao' => $jsonFields->cargoConhecido,
+                'idCandidato' => $candidato->idCandidato,
+            ]);
 
-        $dependentesArray = $request->input('dependentes');
+            //dd($confidente);
+        }
+
+        $dependentesArray = $jsonFields->dependentes;
         foreach ($dependentesArray as $dependenteData) {
+            $dataObj = \DateTime::createFromFormat('d/m/Y', $dependenteData->dataNascimento);
             $dependente = Dependente::create([
-                'numCPFDependente' => $dependenteData['cpf'],
-                'nomeDependente' => $dependenteData['nome'],
-                'sexoDependente' => $dependenteData['sexo'],
-                'dataNascimentoDependente' => $dependenteData['dataNascimento'],
-                'grauParentesco' => $dependenteData['grau'],
+                'numCPFDependente' => $dependenteData->cpf,
+                'nomeDependente' => $dependenteData->nome,
+                'sexoDependente' => $dependenteData->sexo,
+                'dataNascimentoDependente' => $dataObj->format('Y-m-d'),
+                'grauParentesco' => $dependenteData->grau,
                 'idCandidato' => $candidato->idCandidato,
             ]);
         }
 
+        return response()->json(['message' => 'Cadastrado com Sucesso'], 202);
     }
 }

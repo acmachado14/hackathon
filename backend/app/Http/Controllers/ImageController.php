@@ -56,7 +56,7 @@ class ImageController extends Controller
         return response()->json(['erro' => 'Nenhuma imagem enviada'], 400);
     }
 
-    private function extractTextFromImage($imagePath): string
+    public function extractTextFromImage($imagePath): string
     {
         // Lendo a imagem e obtendo os dados binários
         $imageData = file_get_contents($imagePath);
@@ -81,7 +81,7 @@ class ImageController extends Controller
         return count($intersection) / count($union);
     }
 
-    private function compareStrings(array $stringArray, string $compareString, float $threshold = 0.5): bool
+    public function compareStrings(array $stringArray, string $compareString, float $threshold = 0.5): bool
     {
         // Converter a string de comparação e as strings do vetor para letras minúsculas
         $compareString = strtolower($compareString);
