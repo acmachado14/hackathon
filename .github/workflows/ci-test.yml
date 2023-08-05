@@ -29,15 +29,15 @@ jobs:
         run: sleep 20  # Ajuste esse valor conforme necessário para dar tempo aos serviços para iniciar.
 
       - name: Run Composer Install
-        run: docker-compose exec app composer install
+        run: docker-compose exec -T app composer install
         working-directory: ./backend
 
       - name: Run Migrations
-        run: docker-compose exec app php artisan migrate
+        run: docker-compose exec -T app php artisan migrate
         working-directory: ./backend
 
       - name: Run Tests
-        run: docker-compose exec app ./vendor/bin/phpunit
+        run: docker-compose exec -T app ./vendor/bin/phpunit
         working-directory: ./backend
 
       - name: Stop containers
