@@ -11,7 +11,7 @@ class Funcao extends Model
 
     protected $table = 'funcoes'; // Nome da tabela no banco de dados
 
-    protected $primaryKey = 'codigoFuncao'; // Nome da coluna da chave primária
+    protected $primaryKey = 'idFuncao'; // Nome da coluna da chave primária
 
     protected $fillable = [
         'codigoFuncao',
