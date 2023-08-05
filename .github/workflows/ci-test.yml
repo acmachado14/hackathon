@@ -23,7 +23,24 @@ jobs:
 
       - name: Build and start containers
         run: docker-compose up -d
-        working-directory: ./backend  # Diretório do docker-compose.yml
+        working-directory: ./backend
+
+      - name: Configurar permissões para Composer e Artisan
+        run: |
+          sudo useradd -G www-data,root -u $uid -d /home/$user $user
+          sudo mkdir -p /home/$user/.composer &&
+          sudo chown -R $user:$user /home/$user
+        shell: bash
+
+      - name: Alterar permissões do arquivo composer.lock
+        run: |
+          sudo chown $user:$user ./backend/composer.lock
+        working-directory: ./backend
+
+      - name: Executar docker-compose
+        run: |
+          sudo docker-compose exec -T app composer update
+        working-directory: ./backend
 
       - name: Run Composer Install
         run: sudo docker-compose exec -T app composer update
