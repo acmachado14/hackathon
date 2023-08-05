@@ -33,8 +33,8 @@ jobs:
         shell: bash
 
       - name: Exibir variável USER_NAME
-        run:
-          echo "O novo usuário é: ${{ env.USER_NAME }}"
+          run:
+            echo "O novo usuário é: $USER_NAME"
 
       - name: Build and start containers
         run: sudo -u $USER_NAME docker-compose up -d
