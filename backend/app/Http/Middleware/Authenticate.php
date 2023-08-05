@@ -11,9 +11,8 @@ class Authenticate extends Middleware
 {
     public function handle($request, Closure $next, ...$guards)
     {
-
         if ($this->authenticate($request, $guards) === 'guest') {
-            throw new AuthenticationException('Unauthenticated.');
+            return response()->json(['error' => 'Unauthenticated'], 403);
         }
 
         return $next($request);

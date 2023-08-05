@@ -29,3 +29,7 @@ Route::post('/detectRG', [ImageController::class, 'detectRG']);
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('login', [AuthController::class, 'login'])->name('login');
+
+Route::get('login', function () {
+    return response()->json(['error' => 'Unauthenticated'], 403);
+})->name('login');;
