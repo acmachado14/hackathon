@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\CandidatosController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,8 +28,10 @@ Route::post('/detectRG', [ImageController::class, 'detectRG']);
 
 Route::post('/register', [AuthController::class, 'register']);
 
-Route::post('login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
-Route::get('login', function () {
+Route::post('/cadastrarCandidato', [CandidatosController::class, 'cadastrarCandidato']);
+
+Route::get('/login', function () {
     return response()->json(['error' => 'Unauthenticated'], 403);
 })->name('login');;
