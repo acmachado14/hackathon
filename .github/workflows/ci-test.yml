@@ -23,13 +23,21 @@ jobs:
 
       - name: Configurar permissões para Composer e Artisan
         run: |
-          sudo useradd -G www-data,root -u $UID -d /home/$USER novo_usuario
-          sudo mkdir -p /home/novo_usuario/.composer
-          sudo chown -R novo_usuario:novo_usuario /home/novo_usuario
+          USER_UID=$(python -c 'import os; uid = 1001; while os.getpwuid(uid).pw_uid != uid: uid += 1; print(uid)')
+          USER_NAME=novo_usuario_$USER_UID
+          echo "USER_NAME=$USER_NAME" >> $GITHUB_ENV
+          
+          sudo useradd -G www-data,root -u $USER_UID -d /home/$USER_NAME $USER_NAME
+          sudo mkdir -p /home/$USER_NAME/.composer
+          sudo chown -R $USER_NAME:$USER_NAME /home/$USER_NAME
         shell: bash
 
+      - name: Exibir variável USER_NAME
+        run:
+          echo "O novo usuário é: ${{ env.USER_NAME }}"
+
       - name: Build and start containers
-        run: sudo -u novo_usuario docker-compose up -d
+        run: sudo -u $USER_NAME docker-compose up -d
         working-directory: ./backend
 
       - name: Alterar permissões do arquivo composer.lock
