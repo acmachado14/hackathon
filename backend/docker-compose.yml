@@ -62,6 +62,19 @@ services:
         networks:
             - laravel
 
+    tests:
+        build: .
+        command: bash -c "composer update && php artisan migrate && vendor/bin/phpunit"
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - app
+            - db
+        networks:
+            - laravel
+
+
 networks:
     laravel:
         driver: bridge
