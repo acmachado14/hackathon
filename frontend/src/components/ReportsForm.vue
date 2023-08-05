@@ -21,47 +21,46 @@
               </v-row>
               <v-card-title class="text-left">Localização do Report:</v-card-title>
               <v-btn @click="addLocalizacao">Registrar localização</v-btn>  
-              <!-- Remover isto (verificação localização) -->
               <div v-if="localizacao">
                 <p>Latitude: {{ localizacao.latitude }}</p>
                 <p>Longitude: {{ localizacao.longitude }}</p>
               </div>
               <v-card-title class="text-left">Descrição:</v-card-title>
-              <v-textarea v-model="descricao" label="Descrição do relato"></v-textarea>
+              <v-textarea v-model="descricao" label="Descrição do relato*"></v-textarea>
               <v-card-title class="text-left">Fotos:</v-card-title>
               <v-layout row wrap>
                 <v-flex xs6>
-                  <v-btn @click="abrirCamera">Tirar Foto</v-btn>
+                  <v-btn @click="capturarImagem">Capturar imagem</v-btn>
                 </v-flex>
                 <v-flex xs6>
-                  <input type="file" @change="anexarFoto" accept="image/*">
-                </v-flex>
-              </v-layout>
-              <v-layout row wrap>
-                <v-flex xs6>
-                  <v-btn @click="abrirCamera">Tirar Foto</v-btn>
-                </v-flex>
-                <v-flex xs6>
-                  <input type="file" @change="anexarFoto" accept="image/*">
+                  <input type="file" @change="anexarImagem" accept="image/*">
                 </v-flex>
               </v-layout>
               <v-layout row wrap>
                 <v-flex xs6>
-                  <v-btn @click="abrirCamera">Tirar Foto</v-btn>
+                  <v-btn @click="capturarImagem">Capturar imagem</v-btn>
                 </v-flex>
                 <v-flex xs6>
-                  <input type="file" @change="anexarFoto" accept="image/*">
+                  <input type="file" @change="anexarImagem" accept="image/*">
+                </v-flex>
+              </v-layout>
+              <v-layout row wrap>
+                <v-flex xs6>
+                  <v-btn @click="capturarImagem">Capturar imagem</v-btn>
+                </v-flex>
+                <v-flex xs6>
+                  <input type="file" @change="anexarImagem" accept="image/*">
                 </v-flex>
               </v-layout>
               <v-row>
                 <v-col cols="12" sm="6" md="3">
-                  <v-flex xs6 v-for="(foto, index) in fotos" :key="index">
-                    <v-img :src="foto" width="100" height="100"></v-img>
+                  <v-flex xs6 v-for="(imagem, index) in imagens" :key="index">
+                    <v-img :src="imagem" width="100" height="100"></v-img>
                     <v-btn @click="removerFoto(index)" color="error">Excluir Imagem</v-btn>
                   </v-flex>
                 </v-col>
               </v-row>
-
+              <v-divider mb="50x"></v-divider>
               <v-btn type="submit" color="primary">Enviar</v-btn>
             </v-form>
           </v-card-text>
@@ -81,7 +80,7 @@ export default {
       optReferenciaDaAreaDeAtuacao: ['Area 1', 'Area 2', 'Area 3', 'Area 4', 'Area 5'],
       descricao: '',
       localizacao: null, 
-      fotos: [],
+      imagens: [],
       optTipoDeReport: ['Ocorrência', 'Crítica', 'Ideia'],
     };
   },
@@ -89,49 +88,56 @@ export default {
     submitForm() {
       
     },
-    async startCamera() {
-      try {
-        this.videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
-        this.$refs.video.srcObject = this.videoStream;
-      } catch (error) {
-        console.error('Erro ao acessar a câmera:', error);
-      }
-    },
-    async takePhoto() {
-      if (!this.videoStream) return;
-        const canvas = document.createElement('canvas');
-        canvas.width = this.$refs.video.videoWidth;
-        canvas.height = this.$refs.video.videoHeight;
-        
-        canvas.getContext('2d').drawImage(this.$refs.video, 0, 0, canvas.width, canvas.height);
-        this.photoTaken = canvas.toDataURL('image/png');
+    capturarImagem() {
+      if (this.imagens.length < 3) {
+        if ("mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices) {
+          navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+              const video = document.createElement("video");
+              video.srcObject = stream;
 
-        this.videoStream.getTracks().forEach(track => track.stop());
-    },
-    beforeDestroy() {
-      if (this.videoStream) {
-        this.videoStream.getTracks().forEach(track => track.stop());
+              video.onloadedmetadata = () => {
+                video.play();
+
+                const canvas = document.createElement("canvas");
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                const imagemCapturada = canvas.toDataURL("image/jpeg");
+                this.imagens.push(imagemCapturada);
+
+                video.srcObject.getTracks().forEach(track => track.stop());
+              };
+            })
+            .catch(error => {
+              console.error("Erro ao abrir a câmera:", error);
+            });
+        } else {
+          console.error("Acesso à câmera não é suportado pelo navegador.");
+        }
+      } else {
+        console.error("Você já atingiu o limite de 3 imagens.");
       }
     },
-    anexarFoto(event) {
-      if (this.fotos.length >= 3) {
-        console.error("Você já atingiu o limite de 3 fotos.");
+    anexarImagem(event) {
+      if (this.imagens.length >= 3) {
+        console.error("Você já atingiu o limite de 3 imagens.");
         return;
       }
-
       const file = event.target.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = () => {
-          this.foto = reader.result;
-          this.fotos.push(this.foto); // Adicionar foto anexada à lista de fotos
-          this.foto = null; // Limpar a foto anexada para o próximo anexo
+          this.imagem = reader.result;
+          this.imagens.push(this.imagem);
+          this.imagem = null;
         };
         reader.readAsDataURL(file);
       }
     },
     removerFoto(index) {
-      this.fotos.splice(index, 1);
+      this.imagens.splice(index, 1);
     },
     addLocalizacao() {
       if ("geolocation" in navigator) {
