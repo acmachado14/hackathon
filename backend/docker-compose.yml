@@ -71,6 +71,7 @@ services:
         depends_on:
             - app
             - db
+        user: gelin
         networks:
             - laravel
 
