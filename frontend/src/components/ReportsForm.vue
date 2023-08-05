@@ -60,7 +60,6 @@
                   </v-flex>
                 </v-col>
               </v-row>
-              <v-divider mb="50x"></v-divider>
               <v-btn type="submit" color="primary">Enviar</v-btn>
             </v-form>
           </v-card-text>
@@ -122,7 +121,7 @@ export default {
           console.log(pair[0]+ ', ' + pair[1]);
       }
 
-      axios.post('/reportes', fields, {
+      axios.post('/reports', fields, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

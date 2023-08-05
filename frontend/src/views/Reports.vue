@@ -1,7 +1,7 @@
 <template>
-  <HelloWorld />
+  <ReportsForm />
 </template>
 
 <script setup>
-  import HelloWorld from '@/components/ReportsForm.vue'
+  import ReportsForm from '@/components/ReportsForm.vue'
 </script>
