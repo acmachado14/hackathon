@@ -10,13 +10,13 @@
               <v-text-field v-model="nome" label="Nome (Deixe em branco caso anônimo)"></v-text-field>
               <v-row>
                 <v-col cols="12" sm="6" md="3">
-                  <v-select v-model="centroDeCusto" :items="optCentroDeCusto" label="Centro de Custo*"></v-select>
+                  <v-select :rules="ruleReq" v-model="centroDeCusto" :items="optCentroDeCusto" label="Centro de Custo*"></v-select>
                 </v-col>  
                 <v-col cols="12" sm="6" md="3">
-                  <v-select v-model="referenciaDaAreaDeAtuacao" :items="optReferenciaDaAreaDeAtuacao" label="Referência da Área de Atuação*"></v-select>
+                  <v-select :rules="ruleReq" v-model="referenciaDaAreaDeAtuacao" :items="optReferenciaDaAreaDeAtuacao" label="Referência da Área de Atuação*"></v-select>
                 </v-col>
                 <v-col cols="12" sm="6" md="3">
-                  <v-select v-model="tipoDeReport" :items="optTipoDeReport" label="Tipo de Report*"></v-select>
+                  <v-select :rules="ruleReq" v-model="tipoDeReporte" :items="optTipoDeReporte" label="Tipo de Report*"></v-select>
                 </v-col>
               </v-row>
               <v-card-title class="text-left">Localização do Report:</v-card-title>
@@ -26,7 +26,7 @@
                 <p>Longitude: {{ localizacao.longitude }}</p>
               </div>
               <v-card-title class="text-left">Descrição:</v-card-title>
-              <v-textarea v-model="descricao" label="Descrição do relato*"></v-textarea>
+              <v-textarea :rules="ruleReq" v-model="descricao" label="Descrição do relato*"></v-textarea>
               <v-card-title class="text-left">Fotos:</v-card-title>
               <v-layout row wrap>
                 <v-flex xs6>
@@ -78,15 +78,55 @@ export default {
       //Por orientação e porque não foram fornecidas de antemão, as opções de Centro de Custo e Referência da Área de Atuação foram criadas de forma genérica apenas para demonstração 
       optCentroDeCusto: ['Centro 1', 'Centro 2', 'Centro 3', 'Centro 4', 'Centro 5'],
       optReferenciaDaAreaDeAtuacao: ['Area 1', 'Area 2', 'Area 3', 'Area 4', 'Area 5'],
-      descricao: '',
-      localizacao: null, 
+      optTipoDeReporte: ['Ocorrência', 'Crítica', 'Ideia'],
+
+      nome: '',
+      centroDeCusto: null,
+      referenciaDaAreaDeAtuacao: null,
+      tipoDeReporte: null,
+      
+      localizacao: null,
+      latitude: null,
+      longitude: null,
+
+      descricao: '',      
+
       imagens: [],
-      optTipoDeReport: ['Ocorrência', 'Crítica', 'Ideia'],
+      ruleReq:[
+        // value => !!value || 'Esse campo é obrigatório.',
+      ],
     };
   },
   methods: {
     submitForm() {
-      
+
+      const fields = JSON.stringify({
+        nome: this.nome,
+        centroDeCusto: this.centroDeCusto,
+        referenciaDaAreaDeAtuacao: this.referenciaDaAreaDeAtuacao,
+        tipoDeReporte: this.tipoDeReporte,
+
+        latitude: this.latitude,
+        logitude: this.longitude,
+
+        descricao: this.descricao,
+
+      });
+
+      const fd = new FormData();
+      fd.append('foto1', this.imagens[0]);
+      fd.append('foto2', this.imagens[1]);
+      fd.append('foto3', this.imagens[2]);
+      console.log();
+      for (var pair of fd.entries()) {
+          console.log(pair[0]+ ', ' + pair[1]);
+      }
+
+      axios.post('/reportes', fields, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
     },
     capturarImagem() {
       if (this.imagens.length < 3) {
@@ -146,7 +186,9 @@ export default {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
           };
-        });
+        })
+        this.latitude = this.localizacao.latitude;
+        this.longitude = this.localizacao.longitude;
       } else {
         console.error("Erro ao obter a localização.");
       }
