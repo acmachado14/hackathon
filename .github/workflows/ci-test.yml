@@ -18,15 +18,13 @@ jobs:
       DB_PASSWORD: root
 
     steps:
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Configurar permissões para Composer e Artisan
         run: |
-          USER_UID=$(python -c 'import os; uid = 1001; while os.getpwuid(uid).pw_uid != uid: uid += 1; print(uid)')
-          USER_NAME=novo_usuario_$USER_UID
+          USER_UID=4584
+          USER_NAME=novo_usuario
           echo "USER_NAME=$USER_NAME" >> $GITHUB_ENV
           
           sudo useradd -G www-data,root -u $USER_UID -d /home/$USER_NAME $USER_NAME
@@ -35,7 +33,7 @@ jobs:
         shell: bash
 
       - name: Build and start containers
-        run: sudo -u $USER_NAME docker-compose up -d
+        run: sudo -u novo_usuario docker-compose up -d
         working-directory: ./backend
 
       - name: Alterar permissões do arquivo composer.lock
