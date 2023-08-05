@@ -26,7 +26,7 @@ jobs:
         working-directory: ./backend  # Diretório do docker-compose.yml
 
       - name: Give Permisison
-        run: bash -c "chmod -R 644 composer.lock"
+        run: bash -c "chmod -R 644 ./composer.lock"
         working-directory: ./backend
 
       - name: Run Composer Install
