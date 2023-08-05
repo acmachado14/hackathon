@@ -26,19 +26,16 @@ jobs:
         working-directory: ./backend  # Diretório do docker-compose.yml
 
       - name: Run Composer Install
-        run: docker-compose exec -T app composer update
+        run: sudo docker-compose exec -T app composer update
         working-directory: ./backend
-        runas: gelin
 
       - name: Run Migrations
-        run: docker-compose exec -T app php artisan migrate
+        run: sudo docker-compose exec -T app php artisan migrate
         working-directory: ./backend
-        runas: gelin
 
       - name: Run Tests
-        run: docker-compose exec -T app ./vendor/bin/phpunit
+        run: sudo docker-compose exec -T app ./vendor/bin/phpunit
         working-directory: ./backend
-        runas: gelin
 
       - name: Stop containers
         run: docker-compose down
