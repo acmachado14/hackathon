@@ -26,7 +26,7 @@ jobs:
         working-directory: ./backend  # Diretório do docker-compose.yml
 
       - name: Run Composer Install
-        run: -u gelin docker-compose exec -T app composer update
+        run: sudo -u gelin docker-compose exec -T app composer update
         working-directory: ./backend
 
       - name: Run Migrations
