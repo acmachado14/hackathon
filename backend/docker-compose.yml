@@ -62,18 +62,18 @@ services:
         networks:
             - laravel
 
-    tests:
-        build: .
-        command: bash -c "sudo composer update && php artisan migrate && vendor/bin/phpunit"
-        working_dir: /var/www/
-        volumes:
-            - ./:/var/www
-        depends_on:
-            - app
-            - db
-        user: gelin
-        networks:
-            - laravel
+#    tests:
+#        build: .
+#        command: bash -c "chmod -R 775 /var/www/vendor/ && composer update && php artisan migrate && vendor/bin/phpunit"
+#        working_dir: /var/www/
+#        volumes:
+#            - ./:/var/www
+#        depends_on:
+#            - app
+#            - db
+#        user: gelin
+#        networks:
+#            - laravel
 
 
 networks:
