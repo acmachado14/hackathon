@@ -33,7 +33,7 @@ jobs:
         shell: bash
 
       - name: Exibir variável USER_NAME
-          run:
+          run: |
             echo "O novo usuário é: $USER_NAME"
 
       - name: Build and start containers
