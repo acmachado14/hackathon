@@ -25,8 +25,9 @@ jobs:
         run: docker-compose up -d
         working-directory: ./backend  # Diretório do docker-compose.yml
 
-      - name: Wait for services to start
-        run: sleep 20  # Ajuste esse valor conforme necessário para dar tempo aos serviços para iniciar.
+      - name: Give Permisison
+        run: bash -c "chmod -R 644 composer.lock"
+        working-directory: ./backend
 
       - name: Run Composer Install
         run: docker-compose exec -T app composer update
