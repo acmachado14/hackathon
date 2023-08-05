@@ -4,23 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
 
 class Login extends Model
 {
-    use HasFactory;
+    use HasFactory, HasApiTokens;
 
-    protected $table = 'login';
+    protected $table = 'logins';
 
-    protected $primaryKey = false;
+    protected $primaryKey = 'id'; // Defina o nome da chave primária aqui
+
+    public $incrementing = true; // Defina como true para usar autoincremento
 
     protected $fillable = [
         'login',
         'senha',
-        'idCandidato',
     ];
-
-    public function candidato()
-    {
-        return $this->belongsTo(Candidato::class, 'idCandidato', 'idCandidato');
-    }
 }

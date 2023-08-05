@@ -14,14 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('logins', function (Blueprint $table) {
+            $table->id();
             $table->string('login', 45);
-            $table->string('senha', 45);
-            $table->unsignedBigInteger('idCandidato');
-
-            $table->foreign('idCandidato')
-                ->references('idCandidato')
-                ->on('candidatos');
-
+            $table->string('senha', 255);
             $table->timestamps();
         });
     }

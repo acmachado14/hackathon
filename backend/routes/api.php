@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +16,16 @@ use App\Http\Controllers\ImageController;
 |
 */
 
-/*
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('test', function () {
+        return "Rota de teste! Esta é apenas uma rota de exemplo para verificar se está funcionando corretamente.";
+    });
+});
 
 Route::post('/image', [ImageController::class, 'store']);
 
 Route::post('/detectRG', [ImageController::class, 'detectRG']);
+
+Route::post('/register', [AuthController::class, 'register']);
+
+Route::post('login', [AuthController::class, 'login'])->name('login');
