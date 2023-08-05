@@ -12,28 +12,16 @@
               <v-text-field v-model="nomePai" label="Nome Completo do Pai*"></v-text-field>
               <v-row>
                 <v-col cols="12" sm="6" md="3">
-                  <v-select
-                  v-model="sexo"
-                  :items="optSexo"
-                  label="Sexo*"></v-select>
+                  <v-select v-model="sexo" :items="optSexo" label="Sexo*"></v-select>
                 </v-col>
                 <v-col cols="12" sm="6" md="3">
-                  <v-select
-                  v-model="estadoCivil"
-                  :items="optEstadoCivil"
-                  label="Estado Civíl*"></v-select>
+                  <v-select v-model="estadoCivil" :items="optEstadoCivil" label="Estado Civíl*"></v-select>
                 </v-col>
                 <v-col cols="12" sm="6" md="3">
-                  <v-select
-                  v-model="grauInstrucao"
-                  :items="optGrauInstrucao"
-                  label="Grau de Instrução*"></v-select>
+                  <v-select v-model="grauInstrucao" :items="optGrauInstrucao" label="Grau de Instrução*"></v-select>
                 </v-col>
                 <v-col cols="12" sm="6" md="3">
-                  <v-select
-                  v-model="cor"
-                  :items="optCor"
-                  label="Raça/Cor*"></v-select>
+                  <v-select v-model="cor" :items="optCor" label="Raça/Cor*"></v-select>
                 </v-col>
               </v-row>
               <v-card-title class="text-left">Informações de Nascimento</v-card-title>
@@ -42,16 +30,10 @@
                   <v-text-field v-model="nascimento" label="Data de Nascimento*"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
-                  <v-select
-                  v-model="nacionalidade"
-                  :items="optNacionalidade"
-                  label="Nacionalidade*"></v-select>
+                  <v-select v-model="nacionalidade" :items="optNacionalidade" label="Nacionalidade*"></v-select>
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
-                  <v-select
-                  v-model="paisNascimento"
-                  :items="optPaisNascimento"
-                  label="País Nascimento*"></v-select>
+                  <v-select v-model="paisNascimento" :items="optPaisNascimento" label="País Nascimento*"></v-select>
                 </v-col>
               </v-row>
               <v-row>
@@ -104,10 +86,7 @@
                   <v-text-field v-model="bairro" label="Bairro*"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
-                  <v-select
-                  v-model="tipoLogradouro"
-                  :items="optTipoLogradouro"
-                  label="Tipo de Logradouro*"></v-select>
+                  <v-select v-model="tipoLogradouro" :items="optTipoLogradouro" label="Tipo de Logradouro*"></v-select>
                 </v-col>
                 <v-col cols="12" sm="12" md="9">
                   <v-text-field v-model="rua" label="Rua*"></v-text-field>
@@ -128,16 +107,10 @@
                   <v-text-field v-model="orgaoEmissor" label="Orgão Emissor*"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
-                  <v-select
-                  v-model="estadoEmissao"
-                  :items="optEstadoEmissao"
-                  label="Estado de Emissão*"></v-select>
+                  <v-select v-model="estadoEmissao" :items="optEstadoEmissao" label="Estado de Emissão*"></v-select>
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
-                  <v-select
-                  v-model="cidadeEmissao"
-                  :items="optCidadeEmissao"
-                  label="Cidade de Emissão*"></v-select>
+                  <v-select v-model="cidadeEmissao" :items="optCidadeEmissao" label="Cidade de Emissão*"></v-select>
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <v-text-field v-model="dataExpedicao" label="Data de Expedição*"></v-text-field>
@@ -152,63 +125,41 @@
               <v-card-title class="text-left">Outros</v-card-title>
               <v-row>
                 <v-col cols="12" sm="12" md="6">
-                  <v-select
-                  v-model="funcao"
-                  :items="optFuncao"
-                  label="Função*"></v-select>
+                  <v-select v-model="funcao" :items="optFuncao" label="Função*"></v-select>
                 </v-col>
                 <v-col cols="12" sm="12" md="3">
-                  <v-select
-                  v-model="alojado"
-                  :items="optAlojado"
-                  label="Alojado*"></v-select>
+                  <v-select v-model="alojado" :items="optAlojado" label="Alojado*"></v-select>
                 </v-col>
                 <v-col cols="12" sm="12" md="3">
-                  <v-select
-                  v-model="pcd"
-                  :items="optPDC"
-                  label="PCD*"></v-select>
+                  <v-select v-model="pcd" :items="optPDC" label="PCD*"></v-select>
                 </v-col>
               </v-row>
               <v-card-title class="text-left">Anexos</v-card-title>
               <v-col cols="12">
-                <v-file-input
-                  v-model="fileRG"
-                  label="Arquivo de Identidade (RG)*"
-                ></v-file-input>
+                <v-file-input v-model="fileRG" label="Arquivo de Identidade (RG)*"></v-file-input>
               </v-col>
               <v-col cols="12">
-                <v-file-input
-                  v-model="fileCPF"
-                  label="Arquivo de CPF*"
-                ></v-file-input>
+                <v-file-input v-model="fileCPF" label="Arquivo de CPF*"></v-file-input>
               </v-col>
               <v-col cols="12">
-                <v-file-input
-                  v-model="fileCurriculo"
-                  label="Arquivo de Currículo*"
-                ></v-file-input>
+                <v-file-input v-model="fileCurriculo" label="Arquivo de Currículo*"></v-file-input>
               </v-col>
               <v-col cols="12">
-                <v-file-input
-                  v-model="fileCNH"
-                  label="Arquivo de CNH*"
-                ></v-file-input>
+                <v-file-input v-model="fileCNH" label="Arquivo de CNH*"></v-file-input>
               </v-col>
               <v-col cols="12">
-                <v-file-input
-                  v-model="fileReservista"
-                  label="Arquivo de Certificado de Reservista*"
-                ></v-file-input>
+                <v-file-input v-model="fileReservista" label="Arquivo de Certificado de Reservista*"></v-file-input>
               </v-col>
               <v-row>
                 <v-col cols="12">
                   <p style="padding-left: 10px;">Possui algum familiar ou amigo que trabalha na Alfa?</p>
-                  <v-radio-group v-model="conhecido">
-                    <v-radio label="Sim" value="1"></v-radio>
+                  <v-radio-group v-model="conhecido" inline>
+                    <v-radio label="Sim" value="1" active></v-radio>
                     <v-radio label="Não" value="0"></v-radio>
                   </v-radio-group>
                 </v-col>
+              </v-row>
+              <v-row v-if="conhecido === '1'">
                 <v-col cols="12" sm="12" md="12">
                   <v-text-field v-model="nomeConhecido" label="Nome"></v-text-field>
                 </v-col>
@@ -219,7 +170,15 @@
                   <v-text-field v-model="cidadeConhecido" label="Cidade onde trabalha"></v-text-field>
                 </v-col>
               </v-row>
+
               <v-card-title class="text-left">Dependentes</v-card-title>
+              <!-- <v-row>
+                <v-col cols="12">
+                  <p>Dynamic Inputs:</p>
+                  <v-btn @click="addInput">Add Input</v-btn>
+                  <v-btn @click="removeInput">Remove Input</v-btn>
+                </v-col>
+              </v-row> -->
 
               <v-btn type="submit" color="primary">Enviar</v-btn>
             </v-form>
@@ -231,8 +190,6 @@
 </template>
 
 <script>
-// import optionsPaises from '@/data/paises.json';
-import { VDatePicker } from 'vuetify/labs/VDatePicker';
 
 export default {
   data() {
@@ -252,16 +209,21 @@ export default {
       nacionalidade: null,
       optNacionalidade: [],
       optPaisNascimento: [],
-      nascimento: null
+      nascimento: null,
+      conhecido: null,
+      dependentes: [],
     };
   },
   methods: {
     submitForm() {
 
     },
-  },
-  components: {
-    VDatePicker,
+    addDep() {
+      this.dependentes.push('');
+    },
+    removeDep(index) {
+      this.dependentes.splice(index, 1);
+    },
   },
 };
 </script>
