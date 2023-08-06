@@ -24,7 +24,7 @@ jobs:
         run: composer install
         working-directory: ./backend
       - name: Up DataBase
-        run: docker-compose up
+        run: docker-compose up -d
       - name: Run Migrations
         run: php artisan migrate --force
         working-directory: ./backend
