@@ -338,6 +338,8 @@ export default {
         numeroCalca: parseInt(this.numeroCalca),
         tamanhoCamisa: this.tamanhoCamisa,
 
+        telefone1: this.telefone1,
+        telefone2: this.telefone2,
         email: this.email,
         numIdentidade: parseInt(this.numRG),
         orgaoEmissorIdentidade: this.orgaoEmissor,
