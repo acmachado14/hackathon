@@ -14,7 +14,10 @@ class CandidatosController extends Controller
 {
     public function listarCandidatos(Request $request){
         $candidatos = Candidato::with('endereco')
-            ->with('dependentes')->get();
+            ->with('dependentes')
+            ->with('agendamentoFerias')
+            ->with('agendamentoRecisao')
+            ->get();
 
         if (!isset($candidatos)) {
             return response()->json([], 204);
@@ -27,6 +30,8 @@ class CandidatosController extends Controller
     {
         $candidato = Candidato::with('endereco')
             ->with('dependentes')
+            ->with('agendamentoFerias')
+            ->with('agendamentoRecisao')
             ->find($id);
 
         if (!isset($candidato)) {

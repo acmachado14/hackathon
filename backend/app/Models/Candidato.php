@@ -55,6 +55,16 @@ class Candidato extends Model
         return $this->hasMany(Dependente::class, 'idCandidato', 'idCandidato');
     }
 
+    public function agendamentoFerias(): HasMany
+    {
+        return $this->hasMany(SolicitacoesAgendamentosFerias::class, 'idCandidato', 'idCandidato');
+    }
+
+    public function agendamentoRecisao(): HasMany
+    {
+        return $this->hasMany(SolicitacoesAgendamentosRecisao::class, 'idCandidato', 'idCandidato');
+    }
+
     // Relação com a tabela de Endereços
     public function endereco(): BelongsTo
     {
