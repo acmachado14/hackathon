@@ -301,6 +301,16 @@ export default {
     },
   },
   methods: {
+    getBase64(file) {
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        console.log(reader.result);
+      };
+      reader.onerror = function (error) {
+        console.log('Error: ', error);
+      }
+    },
     submitForm() {
       const deps = [];
       this.dependentes.forEach(item => {
@@ -362,11 +372,11 @@ export default {
 
       const fd = new FormData();
       fd.append('fields', fields);
-      fd.append('anexoIdentidade', this.fileRG);
-      fd.append('anexoCPF', this.fileCPF);
-      fd.append('anexoCurriculo', this.fileCurriculo);
-      fd.append('anexoCNH', this.fileCNH);
-      fd.append('anexoCertificadoReservista', this.fileReservista);
+      fd.append('anexoIdentidade', this.fileRG[0]);
+      fd.append('anexoCPF', this.fileCPF[0]);
+      fd.append('anexoCurriculo', this.fileCurriculo[0]);
+      fd.append('anexoCNH', this.fileCNH[0]);
+      fd.append('anexoCertificadoReservista', this.fileReservista[0]);
       console.log();
       for (var pair of fd.entries()) {
           console.log(pair[0]+ ', ' + pair[1]);
@@ -374,7 +384,7 @@ export default {
 
       axios.post('http://127.0.0.1:8989/api/cadastrarCandidato', fd, {
         headers: {
-          'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
+          'Content-Type': 'multipart/form-data',
           'Access-Control-Allow-Origin': '*'
         }
       })
