@@ -54,8 +54,8 @@ class ReporteController extends Controller
 
         $imageController = new ImageController();
 
-        if(isset($request['foto1'])){
-            $foto1 = $request->file('foto1');
+        $foto1 = $request->file('foto1');
+        if(isset($foto1)){
 
             $foto = Foto::create([
                 'idReporte' => $reporte->idReporte,
@@ -63,8 +63,8 @@ class ReporteController extends Controller
             ]);
         }
 
-        if(isset($request['foto2'])){
-            $foto2 = $request->file('foto2');
+        $foto2 = $request->file('foto2');
+        if(isset($foto2)){
 
             $foto = Foto::create([
                 'idReporte' => $reporte->idReporte,
@@ -72,8 +72,8 @@ class ReporteController extends Controller
             ]);
         }
 
-        if(isset($request['foto3'])){
-            $foto3 = $request->file('foto3');
+        $foto3 = $request->file('foto3');
+        if(isset($foto3)){
 
             $foto = Foto::create([
                 'idReporte' => $reporte->idReporte,
