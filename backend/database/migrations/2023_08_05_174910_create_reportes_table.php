@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('reportes', function (Blueprint $table) {
-            $table->id('idReportes')->unsigned()->unique();
+            $table->id('idReporte')->unsigned()->unique();
             $table->string('tipoReporte', 45);
             $table->string('nomeReportador', 80)->nullable();
             $table->string('centroDeCusto', 80);

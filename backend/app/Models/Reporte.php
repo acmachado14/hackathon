@@ -7,11 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reporte extends Model
 {
-    protected $table = 'Reportes';
+    protected $table = 'reportes';
 
-    protected $primaryKey = 'idReportes';
-
-    public $timestamps = false;
+    protected $primaryKey = 'idReporte';
 
     protected $fillable = [
         'tipoReporte',
@@ -19,11 +17,11 @@ class Reporte extends Model
         'centroDeCusto',
         'referenciaDaAreaDeAtuacao',
         'descricaoReporte',
-        'localizacao_idlocalizacao',
+        'idlocalizacao',
     ];
 
     public function localizacao()
     {
-        return $this->belongsTo(Localizacao::class, 'localizacao_idlocalizacao', 'idlocalizacao');
+        return $this->belongsTo(Localizacao::class, 'idlocalizacao', 'idlocalizacao');
     }
 }

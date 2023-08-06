@@ -13,10 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('localizacoes', function (Blueprint $table) {
-            $table->id('idlocalizacao')->unsigned()->unique();
-            $table->float('latitude');
-            $table->float('longitude');
+        Schema::create('fotos', function (Blueprint $table) {
+            $table->id('idFotos')->unsigned()->unique();
+            $table->unsignedBigInteger('idReporte');
+            $table->string('foto', 255);
+
+            $table->foreign('idReporte')
+                ->references('idReporte')
+                ->on('reportes');
+
             $table->timestamps();
         });
     }
@@ -28,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('localizacoes');
+        Schema::dropIfExists('fotos');
     }
 };
