@@ -20,7 +20,7 @@ jobs:
         run: docker-compose up -d db
         env: # Definição das variáveis de ambiente
           DB_CONNECTION: mysql
-          DB_HOST: db
+          DB_HOST: 0.0.0.0
           DB_PORT: 3306
           DB_DATABASE: laravel
           DB_USERNAME: root
@@ -30,7 +30,7 @@ jobs:
         run: php artisan migrate --force
         env: # Definição das variáveis de ambiente
           DB_CONNECTION: mysql
-          DB_HOST: db
+          DB_HOST: 0.0.0.0
           DB_PORT: 3306
           DB_DATABASE: laravel
           DB_USERNAME: root
@@ -40,7 +40,7 @@ jobs:
         run: ./vendor/bin/phpunit
         env: # Definição das variáveis de ambiente
           DB_CONNECTION: mysql
-          DB_HOST: db
+          DB_HOST: 0.0.0.0
           DB_PORT: 3306
           DB_DATABASE: laravel
           DB_USERNAME: root
