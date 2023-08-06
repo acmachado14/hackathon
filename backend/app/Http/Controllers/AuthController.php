@@ -23,7 +23,7 @@ class AuthController extends Controller
 
         $login = Login::create([
             'login' => $request->login,
-            'senha' => bcrypt($request->senha)
+            'senha' => $request->senha
         ]);
 
         $token = $login->createToken('api_token')->plainTextToken;
@@ -38,9 +38,9 @@ class AuthController extends Controller
             'senha' => 'required|min:6'
         ]);
 
-        if (Login::where('login', $request->login)->where('senha', bcrypt($request->senha))->first() != null) {
+        if (Login::where('login', $request->login)->where('senha', $request->senha)->first() != null) {
             $login = Login::where('login', $request->login)
-                ->where('senha', bcrypt($request->senha))
+                ->where('senha', $request->senha)
                 ->first();
             $token = $login->createToken('api_token')->plainTextToken;
             return response()->json(['token' => $token], 200);
