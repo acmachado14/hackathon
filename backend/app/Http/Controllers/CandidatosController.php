@@ -18,6 +18,7 @@ class CandidatosController extends Controller
         $data = [];
         foreach ($candidatos as $candidato){
             $data[] = [
+                "idCandidato" => $candidato->idCandidato,
                 "nomeCandidato" => $candidato->nomeCandidato,
                 "status" => $candidato->status,
                 "codigoFuncao" => $candidato->funcao->codigoFuncao,
@@ -165,6 +166,6 @@ class CandidatosController extends Controller
             ]);
         }
 
-        return response()->json(['message' => 'Cadastrado com Sucesso'], 202);
+        return response()->json(['message' => 'Cadastrado com Sucesso'], 201);
     }
 }
