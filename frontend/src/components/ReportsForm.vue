@@ -60,8 +60,8 @@
                   </v-flex>
                 </v-col>
               </v-row>
-              <v-divider mb="50x"></v-divider>
               <v-btn type="submit" color="primary">Enviar</v-btn>
+              <v-btn @click="fillForm" color="warning">Fill</v-btn>
             </v-form>
           </v-card-text>
         </v-card>
@@ -114,15 +114,15 @@ export default {
       });
 
       const fd = new FormData();
-      fd.append('foto1', this.imagens[0]);
-      fd.append('foto2', this.imagens[1]);
-      fd.append('foto3', this.imagens[2]);
+      fd.append('foto1', this.imagens[0][0]);
+      fd.append('foto2', this.imagens[1][0]);
+      fd.append('foto3', this.imagens[2][0]);
       console.log();
       for (var pair of fd.entries()) {
           console.log(pair[0]+ ', ' + pair[1]);
       }
 
-      axios.post('/reportes', fields, {
+      axios.post('/reports', fields, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -192,6 +192,13 @@ export default {
       } else {
         console.error("Erro ao obter a localização.");
       }
+    },
+    fillForm() {
+      this.nome = '';
+      this.centroDeCusto = this.optCentroDeCusto[0];
+      this.referenciaDaAreaDeAtuacao = this.optReferenciaDaAreaDeAtuacao[0];
+      this.tipoDeReporte = this.optTipoDeReporte[0];
+      this.descricao = 'Descrição padrão.';
     },
   },
 };
