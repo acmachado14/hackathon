@@ -26,6 +26,11 @@ const routes = [
         name: 'Login',
         component: () => import('@/views/Login.vue'),
       },
+      {
+        path: 'areasEquipamentos',
+        name: 'AreasEquipamentos',
+        component: () => import('@/views/AreasEquipamentos.vue'),
+      },
     ],
   },
 ]

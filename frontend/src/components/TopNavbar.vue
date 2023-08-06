@@ -6,6 +6,7 @@
       <v-btn text to="/candidatos">Candidatos</v-btn>
       <v-btn text to="/reports">Reports</v-btn>
       <v-btn text to="/login">Login</v-btn>
+      <v-btn text to="/areasEquipamentos">Areas/Equipamentos</v-btn>
     </div>
     <v-navigation-drawer app temporary v-model="drawer">
       <v-list>
