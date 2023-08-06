@@ -20,7 +20,6 @@ jobs:
         with:
           php-version: 8.1 # Use your PHP version
           extensions: mbstring, bcmath # Setup any required extensions for tests
-        working-directory: ./backend
       - name: Composer install
         run: composer install
         working-directory: ./backend
