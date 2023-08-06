@@ -93,7 +93,7 @@ export default {
       descricao: '',
 
       imagens: [],
-      imagensSend: [null, null, null],
+      imagensSend: [],
       ruleReq:[
         // value => !!value || 'Esse campo é obrigatório.',
       ],
@@ -181,6 +181,7 @@ export default {
     },
     removerFoto(index) {
       this.imagens.splice(index, 1);
+      this.imagensSend.splice(index, 1);
     },
     addLocalizacao() {
       if ("geolocation" in navigator) {
