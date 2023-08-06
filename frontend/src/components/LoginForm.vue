@@ -23,12 +23,15 @@
 
 <script>
 import axios from 'axios';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
+  computed: {
+    ...mapGetters(['getIsLoggedIn']),
+  },
   data() {
     return {
-      CPF: '',
+      cpf: '',
       senha: '',
 
       ruleReq:[
@@ -61,6 +64,7 @@ export default {
         });
 
         if (response.data.token) {
+          this.$store.commit('login');
           this.updateToken(response.data.token);
           this.$router.push('/dashboard');
         } else {
@@ -74,7 +78,7 @@ export default {
     ...mapActions(['updateToken']),
     fillForm() {
       this.cpf = '12345678911';
-      this.senha = 'ABCC1234';
+      this.senha = '123456';
     }
   }
 };
