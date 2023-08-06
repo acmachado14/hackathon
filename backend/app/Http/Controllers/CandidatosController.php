@@ -85,11 +85,8 @@ class CandidatosController extends Controller
             return response()->json(['error' => 'RG nao e valido'], 403);
         }
 
-        //dd("teste");
-
         $endereco = $jsonFields->endereco;
 
-        //dd($endereco);
         $enderecoSalvo = Endereco::create([
             'CEP' => $endereco->CEP,
             'pais' => $endereco->pais,
@@ -172,8 +169,6 @@ class CandidatosController extends Controller
                 'funcao' => $jsonFields->cargoConhecido,
                 'idCandidato' => $candidato->idCandidato,
             ]);
-
-            //dd($confidente);
         }
 
         $dependentesArray = $jsonFields->dependentes;
