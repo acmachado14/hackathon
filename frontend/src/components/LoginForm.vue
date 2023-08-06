@@ -9,7 +9,7 @@
           <v-card-title class="text-center">Login</v-card-title>
           <v-card-text>
             <v-form @submit.prevent="login">
-              <v-text-field :rules="ruleReq" v-model="CPF" label="CPF"></v-text-field>
+              <v-text-field :rules="ruleReq" v-model="cpf" label="CPF"></v-text-field>
               <v-text-field :rules="ruleReq" v-model="senha" label="Senha" type="password"></v-text-field>
               <v-btn type="submit" color="primary">Entrar</v-btn>
               <v-btn @click="fillForm" color="warning">Fill</v-btn>
@@ -23,6 +23,7 @@
 
 <script>
 import axios from 'axios';
+import { mapActions } from 'vuex';
 
 export default {
   data() {
@@ -32,13 +33,13 @@ export default {
 
       ruleReq:[
         value => !!value || 'Esse campo é obrigatório.',
-      ],    
+      ],
     };
   },
   methods: {
     submitForm() {
       const fields = JSON.stringify({
-        CPF: this.CPF,
+        cpf: this.cpf,
         senha: this.senha
       });
       axios.post('/login', fields, {
@@ -47,14 +48,24 @@ export default {
         }
       })
     },
-    login() {
-      //Faz a validação do login neste if
-      if (this.CPF === '12345678911' && this.senha === '123456') {
-        alert('Login bem-sucedido! Redirecionando para a página interna.');
-      } else {
-        alert('CPF ou senha incorretos. Tente novamente!');
+    async login() {
+      try {
+        const response = await axios.post('http://127.0.0.1:8989/api/login', {
+          cpf: this.cpf,
+          password: this.password,
+        });
+
+        if (response.data.token) {
+          this.updateToken(response.data.token);
+        } else {
+          // Invalid credentials
+          // Display an error message to the user
+        }
+      } catch (error) {
+        // Handle error (e.g., network error)
       }
     },
+    ...mapActions(['updateToken']),
     fillForm() {
       this.CPF = '12345678911';
       this.senha = 'ABCC1234';
