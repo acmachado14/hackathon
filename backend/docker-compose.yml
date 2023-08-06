@@ -62,18 +62,6 @@ services:
         networks:
             - laravel
 
-    tests:
-        image: especializati/laravel9-app
-        restart: unless-stopped
-        command: bash -c "php -v && composer update --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts && php artisan migrate:fresh --seed && vendor/bin/phpunit"
-        volumes:
-            - ./:/var/www
-        depends_on:
-            - redis
-            - app
-            - db
-        networks:
-            - laravel
 
 
 networks:

@@ -4,14 +4,14 @@
       <v-col cols="12" sm="10" md="8">
         <v-card>
           <v-card-title class="text-center">Registrar um Report (Ocorrências, críticas e ideias)</v-card-title>
-          <v-card-text> 
+          <v-card-text>
             <v-form @submit.prevent="submitForm">
               <v-card-title class="text-left">Identificação</v-card-title>
               <v-text-field v-model="nome" label="Nome (Deixe em branco caso anônimo)"></v-text-field>
               <v-row>
                 <v-col cols="12" sm="6" md="3">
                   <v-select :rules="ruleReq" v-model="centroDeCusto" :items="optCentroDeCusto" label="Centro de Custo*"></v-select>
-                </v-col>  
+                </v-col>
                 <v-col cols="12" sm="6" md="3">
                   <v-select :rules="ruleReq" v-model="referenciaDaAreaDeAtuacao" :items="optReferenciaDaAreaDeAtuacao" label="Referência da Área de Atuação*"></v-select>
                 </v-col>
@@ -20,7 +20,7 @@
                 </v-col>
               </v-row>
               <v-card-title class="text-left">Localização do Report:</v-card-title>
-              <v-btn @click="addLocalizacao">Registrar localização</v-btn>  
+              <v-btn @click="addLocalizacao">Registrar localização</v-btn>
               <div v-if="localizacao">
                 <p>Latitude: {{ localizacao.latitude }}</p>
                 <p>Longitude: {{ localizacao.longitude }}</p>
@@ -71,11 +71,12 @@
 </template>
 
 <script>
+import axios from 'axios';
 
 export default {
   data() {
     return {
-      //Por orientação e porque não foram fornecidas de antemão, as opções de Centro de Custo e Referência da Área de Atuação foram criadas de forma genérica apenas para demonstração 
+      //Por orientação e porque não foram fornecidas de antemão, as opções de Centro de Custo e Referência da Área de Atuação foram criadas de forma genérica apenas para demonstração
       optCentroDeCusto: ['Centro 1', 'Centro 2', 'Centro 3', 'Centro 4', 'Centro 5'],
       optReferenciaDaAreaDeAtuacao: ['Area 1', 'Area 2', 'Area 3', 'Area 4', 'Area 5'],
       optTipoDeReporte: ['Ocorrência', 'Crítica', 'Ideia'],
@@ -84,14 +85,15 @@ export default {
       centroDeCusto: null,
       referenciaDaAreaDeAtuacao: null,
       tipoDeReporte: null,
-      
+
       localizacao: null,
       latitude: null,
       longitude: null,
 
-      descricao: '',      
+      descricao: '',
 
       imagens: [],
+      imagensSend: [null, null, null],
       ruleReq:[
         // value => !!value || 'Esse campo é obrigatório.',
       ],
@@ -106,25 +108,25 @@ export default {
         referenciaDaAreaDeAtuacao: this.referenciaDaAreaDeAtuacao,
         tipoDeReporte: this.tipoDeReporte,
 
-        latitude: this.latitude,
-        logitude: this.longitude,
+        latitude: this.localizacao.latitude,
+        longitude: this.localizacao.longitude,
 
         descricao: this.descricao,
 
       });
 
       const fd = new FormData();
-      fd.append('foto1', this.imagens[0][0]);
-      fd.append('foto2', this.imagens[1][0]);
-      fd.append('foto3', this.imagens[2][0]);
-      console.log();
-      for (var pair of fd.entries()) {
-          console.log(pair[0]+ ', ' + pair[1]);
-      }
+      fd.append('fields', fields);
+      console.log(this.imagensSend[0])
 
-      axios.post('/reports', fields, {
+      fd.append('foto1', this.imagensSend[0]);
+      fd.append('foto2', this.imagensSend[1]);
+      fd.append('foto3', this.imagensSend[2]);
+
+      axios.post('http://127.0.0.1:8989/api/cadastararReporte', fd, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          'Access-Control-Allow-Origin': '*'
         }
       })
     },
@@ -169,6 +171,7 @@ export default {
       if (file) {
         const reader = new FileReader();
         reader.onload = () => {
+          this.imagensSend.push(file);
           this.imagem = reader.result;
           this.imagens.push(this.imagem);
           this.imagem = null;

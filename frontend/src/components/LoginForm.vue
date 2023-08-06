@@ -51,12 +51,18 @@ export default {
     async login() {
       try {
         const response = await axios.post('http://127.0.0.1:8989/api/login', {
-          cpf: this.cpf,
-          password: this.password,
+          login: this.cpf,
+          senha: this.senha,
+        },
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*'
+          }
         });
 
         if (response.data.token) {
           this.updateToken(response.data.token);
+          this.$router.push('/dashboard');
         } else {
           // Invalid credentials
           // Display an error message to the user
@@ -67,7 +73,7 @@ export default {
     },
     ...mapActions(['updateToken']),
     fillForm() {
-      this.CPF = '12345678911';
+      this.cpf = '12345678911';
       this.senha = 'ABCC1234';
     }
   }
