@@ -16,7 +16,6 @@ class AuthController extends Controller
             'senha' => 'required|min:6'
         ]);
 
-
         if(Candidato::where('numCPF', $request->login)->first() == null){
             return response()->json(['error' => 'Unauthorized'], 401);
         }

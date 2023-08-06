@@ -12,16 +12,7 @@ class ImageController extends Controller
     {
         if ($request->hasFile('images')) {
             $images = $request->file('images');
-
-//            $nomeArquivo = time() . '_' . $images->getClientOriginalName();
-//            $caminho = public_path('imagens');
-//            $images->move($caminho, $nomeArquivo);
-
-//            foreach ($images as $image){
-                $images->store('images', 'public');
-//                dd($images);
-//            }
-
+            $images->store('images', 'public');
             return response()->json(['mensagem' => 'Imagem enviada com sucesso!']);
         }
 
@@ -39,7 +30,6 @@ class ImageController extends Controller
             $image = $request->file('image')->getPathname();
 
             $textoExtraido = $this->extractTextFromImage($image);
-            //dd($textoExtraido);
 
             // Verificando se o texto extraído contém padrões comuns de RG
             $validacao = [
@@ -67,7 +57,6 @@ class ImageController extends Controller
         $ocr->imageData($imageData, $size);
         $textoExtraido = $ocr->run();
 
-        //dd($textoExtraido);
         return $textoExtraido;
     }
 

@@ -10,7 +10,8 @@ use function PHPUnit\Framework\isEmpty;
 
 class ReporteController extends Controller
 {
-    public function listarReporte(Request $request){
+    public function listarReporte(Request $request)
+    {
         $reportes = Reporte::with('localizacao')->with('fotos')->get();
 
         if (!isset($reportes)) {
@@ -30,6 +31,7 @@ class ReporteController extends Controller
 
         return response()->json($reportes);
     }
+
     public function cadastararReporte(Request $request)
     {
         $request->validate([
