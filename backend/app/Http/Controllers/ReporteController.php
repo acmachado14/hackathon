@@ -6,9 +6,30 @@ use App\Models\Foto;
 use App\Models\Localizacao;
 use App\Models\Reporte;
 use Illuminate\Http\Request;
+use function PHPUnit\Framework\isEmpty;
 
 class ReporteController extends Controller
 {
+    public function listarReporte(Request $request){
+        $reportes = Reporte::with('localizacao')->with('fotos')->get();
+
+        if (!isset($reportes)) {
+            return response()->json([], 204);
+        }
+
+        return response()->json($reportes);
+    }
+
+    public function buscarReporte($id)
+    {
+        $reportes = Reporte::with('localizacao')->with('fotos')->find($id);
+
+        if (!isset($reportes)) {
+            return response()->json([], 204);
+        }
+
+        return response()->json($reportes);
+    }
     public function cadastararReporte(Request $request)
     {
         $request->validate([

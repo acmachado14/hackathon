@@ -8,9 +8,35 @@ use App\Models\Dependente;
 use App\Models\Endereco;
 use App\Models\Funcao;
 use Illuminate\Http\Request;
+use function PHPUnit\Framework\isEmpty;
 
 class CandidatosController extends Controller
 {
+    public function listarCandidatos(Request $request){
+        $candidatos = Candidato::with('endereco')
+            ->with('dependentes')->get();
+
+        if (!isset($candidatos)) {
+            return response()->json([], 204);
+        }
+
+        return response()->json($candidatos);
+    }
+
+    public function buscarCandidato($id)
+    {
+        $candidato = Candidato::with('endereco')
+            ->with('dependentes')
+            ->find($id);
+
+        if (!isset($candidato)) {
+            return response()->json([], 204);
+        }
+
+        return response()->json($candidato);
+    }
+
+
     public function cadastrarCandidato(Request $request)
     {
 
