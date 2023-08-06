@@ -61,6 +61,7 @@
                 </v-col>
               </v-row>
               <v-btn type="submit" color="primary">Enviar</v-btn>
+              <v-btn @click="fillForm" color="warning">Fill</v-btn>
             </v-form>
           </v-card-text>
         </v-card>
@@ -191,6 +192,13 @@ export default {
       } else {
         console.error("Erro ao obter a localização.");
       }
+    },
+    fillForm() {
+      this.nome = 'Anônimo';
+      this.centroDeCusto = this.optCentroDeCusto[0];
+      this.referenciaDaAreaDeAtuacao = this.optReferenciaDaAreaDeAtuacao[0];
+      this.tipoDeReporte = this.optTipoDeReporte[0];
+      this.descricao = 'Descrição padrão.';
     },
   },
 };

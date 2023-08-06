@@ -12,6 +12,7 @@
               <v-text-field :rules="ruleReq" v-model="CPF" label="CPF"></v-text-field>
               <v-text-field :rules="ruleReq" v-model="senha" label="Senha" type="password"></v-text-field>
               <v-btn type="submit" color="primary">Entrar</v-btn>
+              <v-btn @click="fillForm" color="warning">Fill</v-btn>
             </v-form>
           </v-card-text>
         </v-card>
@@ -36,12 +37,10 @@ export default {
   },
   methods: {
     submitForm() {
-      
       const fields = JSON.stringify({
         CPF: this.CPF,
         senha: this.senha
       });
-
       axios.post('/login', fields, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -49,11 +48,16 @@ export default {
       })
     },
     login() {
+      //Faz a validação do login neste if
       if (this.CPF === '12345678911' && this.senha === '123456') {
-        alert('Login bem-sucedido! Redirecionando para a página principal.');
+        alert('Login bem-sucedido! Redirecionando para a página interna.');
       } else {
-        alert('CPF ou senha incorretos. Tente novamente.');
+        alert('CPF ou senha incorretos. Tente novamente!');
       }
+    },
+    fillForm() {
+      this.CPF = '12345678911';
+      this.senha = 'ABCC1234';
     }
   }
 };
