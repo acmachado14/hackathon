@@ -27,5 +27,8 @@ jobs:
         run: docker-compose up -d db
         working-directory: ./backend
       - name: Run Tests
+        run: php artisan migrate
+        working-directory: ./backend
+      - name: Run Tests
         run: ./vendor/bin/phpunit
         working-directory: ./backend
