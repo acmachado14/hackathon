@@ -6,6 +6,7 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CandidatosController;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\AreasEquipamentoController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -49,3 +50,6 @@ Route::get('/reporte', [ReporteController::class, 'listarReporte']);
 Route::get('/reporte/{id}', [ReporteController::class, 'buscarReporte']);
 
 Route::post('/cadastararReporte', [ReporteController::class, 'cadastararReporte']);
+
+//Area ou Equipamento
+Route::post('/cadastrarAreasEquipamento', [AreasEquipamentoController::class, 'cadastrarAreasEquipamento']);
