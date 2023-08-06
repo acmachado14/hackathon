@@ -1,7 +1,7 @@
 <template>
-  <ReportsDetalhes />
+  <ReportDetalhado />
 </template>
 
 <script setup>
-  import ReportsDetalhes from '@/components/ReportsDetalhes.vue'
+  import ReportDetalhado from '@/components/ReportDetalhado.vue'
 </script>

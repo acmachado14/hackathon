@@ -1,7 +1,7 @@
 <template>
-  <CandidatosDetalhes/>
+  <CandidatoDetalhado/>
 </template>
 
 <script setup>
-  import CandidatosDetalhes from '@/components/CandidatosDetalhes.vue'
+  import CandidatoDetalhado from '@/components/CandidatoDetalhado.vue'
 </script>

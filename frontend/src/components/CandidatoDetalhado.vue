@@ -135,21 +135,7 @@
                 </v-col>
               </v-row>
               <v-card-title class="text-left">Anexos</v-card-title>
-              <v-col cols="12">
-                <v-file-input v-model="fileRG" label="Arquivo de Identidade (RG)"></v-file-input>
-              </v-col>
-              <v-col cols="12">
-                <v-file-input v-model="fileCPF" label="Arquivo de CPF"></v-file-input>
-              </v-col>
-              <v-col cols="12">
-                <v-file-input v-model="fileCurriculo" label="Arquivo de Currículo"></v-file-input>
-              </v-col>
-              <v-col cols="12">
-                <v-file-input v-model="fileCNH" label="Arquivo de CNH"></v-file-input>
-              </v-col>
-              <v-col cols="12">
-                <v-file-input v-model="fileReservista" label="Arquivo de Certificado de Reservista"></v-file-input>
-              </v-col>
+
               <v-row>
                 <v-col cols="12">
                   <p style="padding-left: 10px;">Possui algum familiar ou amigo que trabalha na Alfa?</p>
@@ -270,6 +256,8 @@ export default {
       pcd: null,
 
       dependentes: [],
+
+      report: []
     };
   },
   mounted() {
@@ -283,6 +271,7 @@ export default {
       axios.get(`http://127.0.0.1:8989/api/candidatos/${this.id}`)
         .then(response => {
           this.report = response.data;
+          console.log(this.report)
         })
         .catch(error => {
           console.error('Error fetching report details:', error);
