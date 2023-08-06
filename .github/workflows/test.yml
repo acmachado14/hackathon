@@ -25,8 +25,8 @@ jobs:
         run: composer install
         working-directory: ./backend
       - name: Up DataBase
-          run: docker-compose up -d db
-          working-directory: ./backend
+        run: docker-compose up -d db
+        working-directory: ./backend
       - name: Run Tests
         run: ./vendor/bin/phpunit
         working-directory: ./backend
