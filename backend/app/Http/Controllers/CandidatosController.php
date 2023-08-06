@@ -69,7 +69,8 @@ class CandidatosController extends Controller
         $candidato->estadoCivil = $jsonFields->estadoCivil;
         $candidato->grauInstrucao = $jsonFields->grauInstrucao;
         $candidato->racaCor = $jsonFields->racaCor;
-        $candidato->dataNascimentoCandidato = $jsonFields->dataNascimentoCandidato;
+        $dataObj = \DateTime::createFromFormat('d/m/Y', $jsonFields->dataNascimentoCandidato);
+        $candidato->dataNascimentoCandidato = $dataObj->format('Y-m-d');
         $candidato->nacionalidade = $jsonFields->nacionalidade;
         $candidato->paisNascimento = $jsonFields->paisNascimento;
         $candidato->estadoNascimento = $jsonFields->estadoNascimento;
