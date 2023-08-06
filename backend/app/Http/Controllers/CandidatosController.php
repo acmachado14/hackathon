@@ -13,17 +13,23 @@ use function PHPUnit\Framework\isEmpty;
 class CandidatosController extends Controller
 {
     public function listarCandidatos(Request $request){
-        $candidatos = Candidato::with('endereco')
-            ->with('dependentes')
-            ->with('agendamentoFerias')
-            ->with('agendamentoRecisao')
-            ->get();
+        $candidatos = Candidato::with('funcao')->get();
 
-        if (!isset($candidatos)) {
+        $data = [];
+        foreach ($candidatos as $candidato){
+            $data[] = [
+                "nomeCandidato" => $candidato->nomeCandidato,
+                "status" => $candidato->status,
+                "codigoFuncao" => $candidato->funcao->codigoFuncao,
+                "descricao" => $candidato->funcao->descricao,
+            ];
+        }
+
+        if (!isset($data)) {
             return response()->json([], 204);
         }
 
-        return response()->json($candidatos);
+        return response()->json($data);
     }
 
     public function buscarCandidato($id)

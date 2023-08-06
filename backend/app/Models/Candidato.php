@@ -71,4 +71,10 @@ class Candidato extends Model
         return $this->belongsTo(Endereco::class, 'idEndereco');
     }
 
+    public function funcao(): BelongsTo
+    {
+        return $this->belongsTo(Funcao::class, 'idFuncao');
+    }
+
+
 }
