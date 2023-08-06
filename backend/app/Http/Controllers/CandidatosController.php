@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Candidato;
+use App\Models\CandidatosHasTelefone;
 use App\Models\ConfidentesDaAlfa;
 use App\Models\Dependente;
 use App\Models\Endereco;
 use App\Models\Funcao;
+use App\Models\Telefone;
+use App\Services\ApiWhatsApp;
 use Illuminate\Http\Request;
 use function PHPUnit\Framework\isEmpty;
 
@@ -142,6 +145,26 @@ class CandidatosController extends Controller
 
         $candidato->save();
 
+        $telefone = Telefone::create([
+            'telefone' => $jsonFields->telefone1
+        ]);
+
+        CandidatosHasTelefone::create([
+            'idCandidato' => $candidato->idCandidato,
+            'idTelefone' => $telefone->idTelefone
+        ]);
+
+        if(isset($jsonFields->telefone2)){
+            $telefone = Telefone::create([
+                'telefone' => $jsonFields->telefone2
+            ]);
+
+            CandidatosHasTelefone::create([
+                'idCandidato' => $candidato->idCandidato,
+                'idTelefone' => $telefone->idTelefone
+            ]);
+        }
+
         if($jsonFields->conhecido){
             $confidente = ConfidentesDaAlfa::create([
                 'nomeConfidenteNaAlfa' => $jsonFields->nomeConhecido,
@@ -165,6 +188,9 @@ class CandidatosController extends Controller
                 'idCandidato' => $candidato->idCandidato,
             ]);
         }
+
+        $apiWhatsAppService = new ApiWhatsApp();
+        $apiWhatsAppService->enviaMensagem($jsonFields->telefone1, "Cadastro Concluido!");
 
         return response()->json(['message' => 'Cadastrado com Sucesso'], 201);
     }
