@@ -209,8 +209,8 @@
 </template>
 
 <script>
-// import axios from 'axios';
-import { vMaska } from "maska";
+
+import axios from 'axios';
 
 export default {
   data() {
@@ -222,7 +222,7 @@ export default {
       optNacionalidade: ["Brasileiro"],
       optPaisNascimento: ["Brasil"],
       optTipoLogradouro: ["Avenida", "Rua", "Travessa", "Alameda", "Praça", "Estrada", "Largo", "Viela", "Passagem", "Rodovia", "Beco", "Ponte", "Caminho", "Alley", "Boulevard", "Calçada", "Cais", "Elevado", "Jardim", "Ladeira", "Marginal", "Passeio", "Pátio", "Pier", "Ramal", "Sítio", "Vila"],
-      optFuncao: [1],
+      optFuncao: [1, 2],
       optAlojado: ["Betim"],
       optEstadoEmissao: ["MG"],
       optCidadeEmissao: ["Betim"],
@@ -302,10 +302,19 @@ export default {
     },
   },
   methods: {
+    getBase64(file) {
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        console.log(reader.result);
+      };
+      reader.onerror = function (error) {
+        console.log('Error: ', error);
+      }
+    },
     submitForm() {
       const deps = [];
       this.dependentes.forEach(item => {
-        // Do something with each item, if needed
         deps.push({ nome: item.nome, grau: item.grau, cpf: item.cpf, sexo: item.sexo, dataNascimento: item.dataNascimento });
       });
 
@@ -330,7 +339,7 @@ export default {
         tamanhoCamisa: this.tamanhoCamisa,
 
         email: this.email,
-        numIdentidade: parseInt(this.numIdentidade),
+        numIdentidade: parseInt(this.numRG),
         orgaoEmissorIdentidade: this.orgaoEmissor,
         estadoOrgaoEmissor: this.estadoEmissao,
         cidadeEmissaoIdentidade: this.cidadeEmissao,
@@ -364,19 +373,20 @@ export default {
 
       const fd = new FormData();
       fd.append('fields', fields);
-      fd.append('fileRG', this.fileRG);
-      fd.append('fileCPF', this.fileCPF);
-      fd.append('fileCurriculo', this.fileCurriculo);
-      fd.append('fileCNH', this.fileCNH);
-      fd.append('fileReservista', this.fileReservista);
+      fd.append('anexoIdentidade', this.fileRG[0]);
+      fd.append('anexoCPF', this.fileCPF[0]);
+      fd.append('anexoCurriculo', this.fileCurriculo[0]);
+      fd.append('anexoCNH', this.fileCNH[0]);
+      fd.append('anexoCertificadoReservista', this.fileReservista[0]);
       console.log();
       for (var pair of fd.entries()) {
           console.log(pair[0]+ ', ' + pair[1]);
       }
 
-      axios.post('/candidatos', fields, {
+      axios.post('http://127.0.0.1:8989/api/cadastrarCandidato', fd, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          'Access-Control-Allow-Origin': '*'
         }
       })
 
@@ -429,7 +439,7 @@ export default {
       if (!this.num) this.num = '123';
       if (!this.complemento) this.complemento = 'Complemento Padrão';
       if (!this.numRG) this.numRG = '12345678';
-      if (!this.orgaoEmissor) this.orgaoEmissor = 'Orgão Padrão';
+      if (!this.orgaoEmissor) this.orgaoEmissor = 'SSP';
       if (!this.dataExpedicao) this.dataExpedicao = '01/01/2010';
       if (!this.cpf) this.cpf = '12345678900';
       if (!this.pis) this.pis = '12345678900';

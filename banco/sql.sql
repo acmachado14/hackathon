@@ -204,6 +204,110 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Logins` (
     ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `mydb`.`localizacao`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`localizacao` (
+                                                    `idlocalizacao` INT NOT NULL,
+                                                    `latitude` FLOAT NOT NULL,
+                                                    `longitude` FLOAT NOT NULL,
+                                                    PRIMARY KEY (`idlocalizacao`))
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Reportes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Reportes` (
+                                                 `idReportes` INT NOT NULL AUTO_INCREMENT,
+                                                 `tipoReporte` VARCHAR(45) NOT NULL,
+    `nomeReportador` VARCHAR(80) NULL,
+    `centroDeCusto` VARCHAR(80) NOT NULL,
+    `referenciaDaAreaDeAtuacao` VARCHAR(80) NOT NULL,
+    `descricaoReporte` VARCHAR(275) NOT NULL,
+    `localizacao_idlocalizacao` INT NOT NULL,
+    PRIMARY KEY (`idReportes`),
+    INDEX `fk_Relatos_localizacao1_idx` (`localizacao_idlocalizacao` ASC) VISIBLE,
+    CONSTRAINT `fk_Relatos_localizacao1`
+    FOREIGN KEY (`localizacao_idlocalizacao`)
+    REFERENCES `mydb`.`localizacao` (`idlocalizacao`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Fotos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Fotos` (
+                                              `idFotos` INT NOT NULL AUTO_INCREMENT,
+                                              `Relatos_idReporte` INT NOT NULL,
+                                              `foto` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`idFotos`, `Relatos_idReporte`),
+    INDEX `fk_Fotos_Relatos1_idx` (`Relatos_idReporte` ASC) VISIBLE,
+    CONSTRAINT `fk_Fotos_Relatos1`
+    FOREIGN KEY (`Relatos_idReporte`)
+    REFERENCES `mydb`.`Reportes` (`idReportes`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Areas_ou_Equipamento`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Areas_ou_Equipamento` (
+                                                             `idAreaEquipamento` INT NOT NULL,
+                                                             `codigoAreaEquipamento` VARCHAR(45) NOT NULL,
+    `descricaoAreaEquipamento` VARCHAR(275) NOT NULL,
+    `statusLiberacao` TINYINT NOT NULL,
+    `anexoPDFDescritiovo` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`idAreaEquipamento`))
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Solicitacoes_Agendamentos_Ferias`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Solicitacoes_Agendamentos_Ferias` (
+                                                                         `idSolicitacoes_Agendamentos_Ferias` INT NOT NULL AUTO_INCREMENT,
+                                                                         `dataSolicitacaoFerias` DATETIME NOT NULL,
+                                                                         `dataAprovacaoReprovacaoFerias` DATETIME NULL,
+                                                                         `dataInicioFerias` DATETIME NOT NULL,
+                                                                         `diasSolicitados` INT(2) NOT NULL,
+    `diasAprovados` INT(2) NULL,
+    `Canditatos_numCPF` INT(11) NOT NULL,
+    PRIMARY KEY (`idSolicitacoes_Agendamentos_Ferias`),
+    INDEX `fk_Solicitacoes_Agendamentos_Ferias_Canditatos1_idx` (`Canditatos_numCPF` ASC) VISIBLE,
+    CONSTRAINT `fk_Solicitacoes_Agendamentos_Ferias_Canditatos1`
+    FOREIGN KEY (`Canditatos_numCPF`)
+    REFERENCES `mydb`.`Canditatos` (`numCPF`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Solicitacoes_Agendamentos_Recisao`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Solicitacoes_Agendamentos_Recisao` (
+                                                                          `idSolicitacoes_Agendamentos_Recisao` INT NOT NULL AUTO_INCREMENT,
+                                                                          `dataSolicitacaoRecisao` DATETIME NOT NULL,
+                                                                          `dataAprovacaoReprovacaoRecisao` DATETIME NULL,
+                                                                          `motivo` VARCHAR(45) NOT NULL,
+    `rankRecontratacao` INT(1) NOT NULL,
+    `Canditatos_numCPF` INT(11) NOT NULL,
+    `statusRecisao` VARCHAR(45) NOT NULL,
+    PRIMARY KEY (`idSolicitacoes_Agendamentos_Recisao`),
+    INDEX `fk_Solicitacoes_Agendamentos_Recisao_Canditatos1_idx` (`Canditatos_numCPF` ASC) VISIBLE,
+    CONSTRAINT `fk_Solicitacoes_Agendamentos_Recisao_Canditatos1`
+    FOREIGN KEY (`Canditatos_numCPF`)
+    REFERENCES `mydb`.`Canditatos` (`numCPF`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
