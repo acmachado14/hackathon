@@ -2,31 +2,34 @@ name: CI-CD
 on:
   push:
     branches: main
+env: # Definição das variáveis de ambiente
+  DB_CONNECTION: mysql
+  DB_HOST: 127.0.0.1
+  DB_PORT: 3306
+  DB_DATABASE: db
+  DB_USERNAME: user
+  DB_PASSWORD: password
 jobs:
   test-php: #rodar testes unitarios e instalar as lib com o composer
     name: Test PHP
     runs-on: ubuntu-latest
-    env: # Definição das variáveis de ambiente
-      DB_CONNECTION: mysql
-      DB_HOST: db
-      DB_PORT: 3306
-      DB_DATABASE: laravel
-      DB_USERNAME: root
-      DB_PASSWORD: root
     steps:
       - uses: actions/checkout@v1
       - name: Setup PHP
-        uses: shivammathur/setup-php@v1
+        uses: shivammathur/setup-php@v2
         with:
           php-version: 8.1 # Use your PHP version
           extensions: mbstring, bcmath # Setup any required extensions for tests
-        working-directory: ./backend
       - name: Composer install
         run: composer install
         working-directory: ./backend
       - name: Up DataBase
-          run: docker-compose up -d db
-          working-directory: ./backend
+        run: docker-compose up -d
+      - name: Esperar 20 segundos
+        run: sleep 20
+      - name: Run Migrations
+        run: php artisan migrate --force
+        working-directory: ./backend
       - name: Run Tests
         run: ./vendor/bin/phpunit
         working-directory: ./backend
